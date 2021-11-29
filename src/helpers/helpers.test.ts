@@ -1,6 +1,5 @@
 import {
-  findByActor,
-  findByGenre,
+  hasActor, hasGenre,
   movieStatusManagerHelper,
   removeMovieManagerHelper
 } from './helpers'
@@ -41,84 +40,45 @@ export const testMovieDb = {
 }
 
 
-describe('find by actor', () => {
+describe('hasActor', () => {
+  const testMovie = {
+    id: '1',
+    name: 'Savages',
+    genres: ['Thriller', 'Action'],
+    imdbRating: 7.6,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
+    comment: 'Cool movie about narcotics',
+    actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
+  };
   test('Finds with upper case', () => {
-    const testResult = [{
-      id: '1',
-      name: 'Savages',
-      genres: ['Thriller', 'Action'],
-      imdbRating: 7.6,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
-      comment: 'Cool movie about narcotics',
-      actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
-    }];
-    expect(findByActor('Benicio', testMovieDb.watchedMovies)).toMatchObject(testResult);
+
+    expect(hasActor('Josh')(testMovie)).toBe(true);
   });
   test('Finds with lower case', () => {
-    const testResult = [{
-      id: '1',
-      name: 'Savages',
-      genres: ['Thriller', 'Action'],
-      imdbRating: 7.6,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
-      comment: 'Cool movie about narcotics',
-      actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
-    }];
-    expect(findByActor('benicio', testMovieDb.watchedMovies)).toMatchObject(testResult);
+    expect(hasActor('Josh')(testMovie)).toBe(true);
   });
-  test('returns all if no actor specified', () => {
-    expect(findByActor('', testMovieDb.watchedMovies)).toMatchObject(testMovieDb.watchedMovies);
+  test('returns false if no actor in the movie', () => {
+    expect(hasActor('mike')(testMovie)).toBe(false)
   })
 })
-describe('find by genre', () => {
-  test('Finds with upper case', () => {
-    const testResult = [
-        {
-        id: '1',
-        name: 'Savages',
-        genres: ['Thriller', 'Action'],
-        imdbRating: 7.6,
-        imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
-        comment: 'Cool movie about narcotics',
-        actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
-      },
-      {
-        id: '2',
-        name: 'Inception',
-        genres: ['Thriller, Action'],
-        imdbRating: 7.6,
-        imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX1000_.jpg',
-        comment: 'Cool movie about dreams',
-        actors: ['Leonardo Di Caprio', 'Tom Hardy', 'Joseph Gordon-Levitt']
-      },
-    ];
-    expect(findByGenre('Thriller', testMovieDb.watchedMovies)).toMatchObject(testResult);
+describe('hasGenre', () => {
+  const testMovie = {
+    id: '1',
+    name: 'Savages',
+    genres: ['Thriller', 'Action'],
+    imdbRating: 7.6,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
+    comment: 'Cool movie about narcotics',
+    actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
+  };
+  test('checks with upper case', () => {
+    expect(hasGenre('Thriller')(testMovie)).toBe(true);
   });
-  test('Finds with lower case', () => {
-    const testResult = [
-      {
-        id: '1',
-        name: 'Savages',
-        genres: ['Thriller', 'Action'],
-        imdbRating: 7.6,
-        imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
-        comment: 'Cool movie about narcotics',
-        actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
-      },
-      {
-        id: '2',
-        name: 'Inception',
-        genres: ['Thriller, Action'],
-        imdbRating: 7.6,
-        imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX1000_.jpg',
-        comment: 'Cool movie about dreams',
-        actors: ['Leonardo Di Caprio', 'Tom Hardy', 'Joseph Gordon-Levitt']
-      },
-    ];
-    expect(findByGenre('thriller', testMovieDb.watchedMovies)).toMatchObject(testResult);
+  test('checks with lower case', () => {
+    expect(hasGenre('thriller')(testMovie)).toBe(true);
   });
-  test('returns all if no genre specified', () => {
-    expect(findByGenre('', testMovieDb.watchedMovies)).toMatchObject(testMovieDb.watchedMovies);
+  test('returns false if no actor in the movie', () => {
+    expect(hasGenre('mike')(testMovie)).toBe(false)
   })
 })
 describe('removeMovieManagerHelper', () => {

@@ -1,22 +1,16 @@
 import {IAllMovies, MovieItemType, MovieStatus} from "../types";
 import { v4 as uuid4 } from 'uuid'
 
-export function findByActor(actor: string, movies: MovieItemType[]): MovieItemType[]  {
-  if(!actor) {
-    return movies;
-  }
-  return movies.filter(movie => {
+export function hasActor(actor: string): (movie: MovieItemType) => boolean {
+  return function (movie: MovieItemType): boolean {
     return movie.actors.map(actor => actor.toLowerCase()).some(actorItem => actorItem.includes(actor.toLowerCase()));
-  })
+  }
 }
 
-export function findByGenre(genre: string, movies: MovieItemType[]): MovieItemType[]  {
-  if(!genre) {
-    return movies;
-  }
-  return movies.filter(movie => {
+export function hasGenre(genre: string): (movie: MovieItemType) => boolean {
+  return function (movie: MovieItemType): boolean {
     return movie.genres.map(genre => genre.toLowerCase()).some(genreItem => genreItem.includes(genre.toLowerCase()));
-  })
+  }
 }
 
 export function removeMovieManagerHelper(allMovies: IAllMovies) {

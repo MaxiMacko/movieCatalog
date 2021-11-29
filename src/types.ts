@@ -27,7 +27,7 @@ export interface MovieItemTypeProps {
 }
 
 export interface TabsPanelProps {
-  selectedTab: number,
+  selectedTab: TabNames,
   selectTabCallback: (index: number) => void,
 }
 
@@ -36,4 +36,9 @@ export interface FilterPanelProps {
   genreFilterValue: string,
   actorFilterChangeHandler: (e: string) => void,
   genreFilterChangeHandler: (e: string) => void,
+}
+
+export enum TabNames {
+  WATCHED,
+  FUTURE
 }

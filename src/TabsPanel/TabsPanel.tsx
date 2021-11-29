@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {IAllMovies, MovieItemType, MovieStatus, TabsPanelProps} from "../types";
-import {TabList, Tabs, Tab, TabPanel} from "react-tabs";
+import React, {useState} from 'react'
+import {IAllMovies, MovieStatus, TabsPanelProps} from "../types";
+import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import MovieList from "../MovieList/MovieList";
 import styled from "styled-components";
 import {
-  findByActor,
-  findByGenre,
+  hasActor, hasGenre,
   movieStatusManagerHelper,
   removeMovieManagerHelper,
   testMovieDb
@@ -40,15 +39,6 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
   const [actorFilterValue, setActorFilterValue] = useState<string>('');
   const [genreFilterValue, setGenreFilterValue] = useState<string>('');
 
-  // useEffect(() => {
-  //   setWatchedMovies(findByActor(actorFilterValue, testMovieDb.watchedMovies))
-  // }, [actorFilterValue])
-
-  // useEffect(() => {
-  //   setWatchedMovies(findByGenre(genreFilterValue, testMovieDb.watchedMovies))
-  // }, [genreFilterValue])
-
-
   const removeMovieManager = removeMovieManagerHelper(allMovies);
   const deleteWatchedMovieHandler = removeMovieManager('watched');
   const deleteFutureMovieHandler = removeMovieManager('future');
@@ -74,30 +64,36 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
       <TabPanel>
         <MovieList>
           {
-            allMovies.watchedMovies.map(movieItem => (
-              <MovieItem
-                key={movieItem.id}
-                movie={movieItem}
-                deleteHandler={deleteWatchedMovieHandler}
-                changeMovieStatusHandler={changeMovieStatusHandler}
-                moviesStatus={'watched'}
-              />
-            ))
+            allMovies.watchedMovies
+              .filter(hasActor(actorFilterValue))
+              .filter(hasGenre(genreFilterValue))
+              .map(movieItem => (
+                <MovieItem
+                  key={movieItem.id}
+                  movie={movieItem}
+                  deleteHandler={deleteWatchedMovieHandler}
+                  changeMovieStatusHandler={changeMovieStatusHandler}
+                  moviesStatus={'watched'}
+                />
+              ))
           }
         </MovieList>
       </TabPanel>
       <TabPanel>
         <MovieList>
           {
-            allMovies.futureMovies.map(movieItem => (
-              <MovieItem
-                key={movieItem.id}
-                movie={movieItem}
-                deleteHandler={deleteFutureMovieHandler}
-                changeMovieStatusHandler={changeMovieStatusHandler}
-                moviesStatus={'future'}
-              />
-            ))
+            allMovies.futureMovies
+              .filter(hasActor(actorFilterValue))
+              .filter(hasGenre(genreFilterValue))
+              .map(movieItem => (
+                <MovieItem
+                  key={movieItem.id}
+                  movie={movieItem}
+                  deleteHandler={deleteFutureMovieHandler}
+                  changeMovieStatusHandler={changeMovieStatusHandler}
+                  moviesStatus={'future'}
+                />
+              ))
           }
         </MovieList>
       </TabPanel>
