@@ -48,7 +48,7 @@ const Comment = styled.div`
 
 const AdditionalControls = styled.div`
   display: flex;
-  min-width: 180px;
+  min-width: 15rem;
   height: 30px;
   align-items: center;
 `
@@ -60,6 +60,7 @@ const MoveToFutureMoviesButton = styled.button`
   background-color: #0c0d71;
   border: 1px solid white;
   border-radius: 3px;
+  margin-right: 1rem;
   &:hover {
     color: #0c0d71;
     background-color: white;
