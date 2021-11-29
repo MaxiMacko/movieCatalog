@@ -4,6 +4,7 @@ import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import MovieList from "../MovieList/MovieList";
 import styled from "styled-components";
 import {
+  containsName,
   hasActor, hasGenre,
   movieStatusManagerHelper,
   removeMovieManagerHelper,
@@ -38,6 +39,7 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
   const [allMovies, setAllMovies] = useState<IAllMovies>(testMovieDb);
   const [actorFilterValue, setActorFilterValue] = useState<string>('');
   const [genreFilterValue, setGenreFilterValue] = useState<string>('');
+  const [nameFilterValue, setNameFilterValue] = useState<string>('');
 
   const removeMovieManager = removeMovieManagerHelper(allMovies);
   const deleteWatchedMovieHandler = removeMovieManager('watched');
@@ -58,6 +60,8 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
       <FiltersPanel
         actorFilterValue={actorFilterValue}
         genreFilterValue={genreFilterValue}
+        nameFilterValue={nameFilterValue}
+        nameFilterChangeHandler={setNameFilterValue}
         actorFilterChangeHandler={setActorFilterValue}
         genreFilterChangeHandler={setGenreFilterValue}
       />
@@ -67,6 +71,7 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
             allMovies.watchedMovies
               .filter(hasActor(actorFilterValue))
               .filter(hasGenre(genreFilterValue))
+              .filter(containsName(nameFilterValue))
               .map(movieItem => (
                 <MovieItem
                   key={movieItem.id}
@@ -85,6 +90,7 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
             allMovies.futureMovies
               .filter(hasActor(actorFilterValue))
               .filter(hasGenre(genreFilterValue))
+              .filter(containsName(nameFilterValue))
               .map(movieItem => (
                 <MovieItem
                   key={movieItem.id}

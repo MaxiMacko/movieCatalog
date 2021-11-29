@@ -33,6 +33,12 @@ const FiltersPanel: React.FC<FilterPanelProps> = props => {
           <input  value={props.genreFilterValue} onChange={e => props.genreFilterChangeHandler(e.target.value)}/>
         </FilterInput>
       </Filter>
+      <Filter>
+        <FilterName>Filter by name: </FilterName>
+        <FilterInput>
+          <input  value={props.nameFilterValue} onChange={e => props.nameFilterChangeHandler(e.target.value)}/>
+        </FilterInput>
+      </Filter>
     </Root>
   )
 }

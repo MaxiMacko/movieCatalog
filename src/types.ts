@@ -34,8 +34,10 @@ export interface TabsPanelProps {
 export interface FilterPanelProps {
   actorFilterValue: string,
   genreFilterValue: string,
+  nameFilterValue: string,
   actorFilterChangeHandler: (e: string) => void,
   genreFilterChangeHandler: (e: string) => void,
+  nameFilterChangeHandler: (e: string) => void,
 }
 
 export enum TabNames {

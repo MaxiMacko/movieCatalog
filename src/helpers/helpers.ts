@@ -13,6 +13,12 @@ export function hasGenre(genre: string): (movie: MovieItemType) => boolean {
   }
 }
 
+export function containsName(name: string): (movie: MovieItemType) => boolean {
+  return function (movie: MovieItemType): boolean {
+    return movie.name.toLowerCase().includes(name)
+  }
+}
+
 export function removeMovieManagerHelper(allMovies: IAllMovies) {
   return function(movieStatus: MovieStatus) {
     return function (movieId: string): IAllMovies {
