@@ -8,14 +8,22 @@ export interface MovieItemType {
   actors: string[],
 }
 
+export interface IAllMovies {
+  watchedMovies: MovieItemType[],
+  futureMovies: MovieItemType[],
+}
+
+export type MovieStatus = 'watched' | 'future';
+
 export interface MovieListProps {
-  movies: MovieItemType[],
-  deleteMovieHandler: (id: string) => void
+  children: JSX.Element | JSX.Element[],
 }
 
 export interface MovieItemTypeProps {
   movie: MovieItemType,
-  deleteHandler: (id:string) => void
+  changeMovieStatusHandler: (id: string, movieStatus: MovieStatus) => void,
+  deleteHandler: (id:string) => void,
+  moviesStatus: MovieStatus
 }
 
 export interface TabsPanelProps {

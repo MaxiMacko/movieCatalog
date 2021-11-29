@@ -1,4 +1,4 @@
-import {MovieItemType} from "../types";
+import {IAllMovies, MovieItemType, MovieStatus} from "../types";
 import { v4 as uuid4 } from 'uuid'
 
 export function findByActor(actor: string, movies: MovieItemType[]): MovieItemType[]  {
@@ -6,7 +6,7 @@ export function findByActor(actor: string, movies: MovieItemType[]): MovieItemTy
     return movies;
   }
   return movies.filter(movie => {
-    return movie.actors.some(actorItem => actorItem.includes(actor));
+    return movie.actors.map(actor => actor.toLowerCase()).some(actorItem => actorItem.includes(actor.toLowerCase()));
   })
 }
 
@@ -15,13 +15,68 @@ export function findByGenre(genre: string, movies: MovieItemType[]): MovieItemTy
     return movies;
   }
   return movies.filter(movie => {
-    return movie.genres.some(genreItem => genreItem.includes(genre));
+    return movie.genres.map(genre => genre.toLowerCase()).some(genreItem => genreItem.includes(genre.toLowerCase()));
   })
 }
 
-export function removeById(id: string, movies: MovieItemType[]): MovieItemType[] {
-  return movies.filter(movie => movie.id !== id)
+export function removeMovieManagerHelper(allMovies: IAllMovies) {
+  return function(movieStatus: MovieStatus) {
+    return function (movieId: string): IAllMovies {
+      if(movieStatus === 'watched') {
+        return {
+          futureMovies: allMovies.futureMovies,
+          watchedMovies: allMovies.watchedMovies.filter(movie => movie.id !== movieId),
+        }
+      }
+      return {
+        futureMovies: allMovies.futureMovies.filter(movie => movie.id !== movieId),
+        watchedMovies: allMovies.watchedMovies,
+      }
+    }
+  }
 }
+
+export function movieStatusManagerHelper(allMovies: IAllMovies): (movieId: string, movieStatus: MovieStatus) => IAllMovies {
+  return function changeMovieStatus(movieId: string, movieStatus: MovieStatus) {
+      if (movieStatus === 'watched') {
+        const movieEntity = allMovies.watchedMovies.find(item => item.id ===  movieId);
+        if (!movieEntity) {
+          return allMovies;
+        }
+
+        if (allMovies.futureMovies.some(futureMovie => futureMovie.name === movieEntity.name)) {
+          return {
+            futureMovies: allMovies.futureMovies,
+            watchedMovies: allMovies.watchedMovies.filter(movie => movie.id !== movieId),
+          }
+        }
+        return {
+          futureMovies: [...allMovies.futureMovies, movieEntity],
+          watchedMovies: allMovies.watchedMovies.filter(movie => movie.id !== movieId),
+        }
+      }
+
+      // Case when movieStatus is future
+
+      const movieEntity = allMovies.futureMovies.find(item => item.id ===  movieId);
+      if (!movieEntity) {
+        return allMovies;
+      }
+
+      if (allMovies.watchedMovies.some(watchedMovie => watchedMovie.name === movieEntity.name)) {
+        return {
+          futureMovies: allMovies.futureMovies.filter(movie => movie.id !== movieId),
+          watchedMovies: allMovies.watchedMovies,
+        }
+      }
+      return {
+        futureMovies: allMovies.futureMovies.filter(movie => movie.id !== movieId),
+        watchedMovies:  [...allMovies.watchedMovies, movieEntity]
+      }
+  }
+}
+
+
 
 export const testMovieDb = {
   watchedMovies: [
@@ -53,7 +108,7 @@ export const testMovieDb = {
       actors: ['Jim Carrey', "Jennifer Tilly"]
     },
   ],
-  moviesToWatch : [
+  futureMovies : [
 
   ]
 }

@@ -45,8 +45,29 @@ const Comment = styled.div`
   width: 100%;
   margin-left: 10rem;
 `
+
+const AdditionalControls = styled.div`
+  display: flex;
+  min-width: 180px;
+  height: 30px;
+  align-items: center;
+`
+
+const MoveToFutureMoviesButton = styled.button`
+  height: 30px;
+  cursor: pointer;
+  color: white;
+  background-color: #0c0d71;
+  border: 1px solid white;
+  border-radius: 3px;
+  &:hover {
+    color: #0c0d71;
+    background-color: white;
+  }
+`
+
 const MovieItem: React.FC<MovieItemTypeProps> = props => {
-  const { movie, deleteHandler } = props;
+  const { movie, deleteHandler, changeMovieStatusHandler, moviesStatus } = props;
 
   return (
     <Root>
@@ -62,9 +83,14 @@ const MovieItem: React.FC<MovieItemTypeProps> = props => {
         </GenresWrapper>
       </PicAndRating>
       <Comment>{movie.comment}</Comment>
-      <IconContext.Provider value={{ size: "2em" }}>
-        <StyledDeleteIcon onClick={() => deleteHandler(movie.id)}/>
-      </IconContext.Provider>
+      <AdditionalControls>
+        <MoveToFutureMoviesButton onClick={() => changeMovieStatusHandler(movie.id, moviesStatus)}>
+          {`Move to ${moviesStatus === 'watched' ? 'Future' : 'Watched'} Category`}
+        </MoveToFutureMoviesButton>
+        <IconContext.Provider value={{ size: "2em" }}>
+          <StyledDeleteIcon onClick={() => deleteHandler(movie.id)}/>
+        </IconContext.Provider>
+      </AdditionalControls>
     </Root>
   )
 
