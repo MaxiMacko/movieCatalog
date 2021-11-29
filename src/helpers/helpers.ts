@@ -15,7 +15,7 @@ export function hasGenre(genre: string): (movie: MovieItemType) => boolean {
 
 export function containsName(name: string): (movie: MovieItemType) => boolean {
   return function (movie: MovieItemType): boolean {
-    return movie.name.toLowerCase().includes(name)
+    return movie.name.toLowerCase().includes(name.toLowerCase())
   }
 }
 

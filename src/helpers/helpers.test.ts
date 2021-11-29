@@ -1,4 +1,5 @@
 import {
+  containsName,
   hasActor, hasGenre,
   movieStatusManagerHelper,
   removeMovieManagerHelper
@@ -57,7 +58,7 @@ describe('hasActor', () => {
   test('Finds with lower case', () => {
     expect(hasActor('Josh')(testMovie)).toBe(true);
   });
-  test('returns false if no actor in the movie', () => {
+  test('returns false if movie does not contain actor filter value', () => {
     expect(hasActor('mike')(testMovie)).toBe(false)
   })
 })
@@ -77,7 +78,27 @@ describe('hasGenre', () => {
   test('checks with lower case', () => {
     expect(hasGenre('thriller')(testMovie)).toBe(true);
   });
-  test('returns false if no actor in the movie', () => {
+  test('returns false if movie does not contain genre filter value', () => {
+    expect(hasGenre('mike')(testMovie)).toBe(false)
+  })
+})
+describe('containsName', () => {
+  const testMovie = {
+    id: '1',
+    name: 'Savages',
+    genres: ['Thriller', 'Action'],
+    imdbRating: 7.6,
+    imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjkwZDhjZTEtZjY2Mi00NGEwLWIzOTAtNTJiOTZiNWEwYTlkXkEyXkFqcGdeQXVyNTQ0MDQyMTg@._V1_.jpg',
+    comment: 'Cool movie about narcotics',
+    actors: ['Benicio Del Toro', 'Josh Brolin', 'Emily Blunt']
+  };
+  test('checks with upper case', () => {
+    expect(containsName('Sav')(testMovie)).toBe(true);
+  });
+  test('checks with lower case', () => {
+    expect(containsName('sav')(testMovie)).toBe(true);
+  });
+  test('returns false if movie does not contain name filter value', () => {
     expect(hasGenre('mike')(testMovie)).toBe(false)
   })
 })
