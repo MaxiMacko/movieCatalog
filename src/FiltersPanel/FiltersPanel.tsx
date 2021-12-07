@@ -18,7 +18,6 @@ const FilterInput = styled.div`
   margin-left: 0.5rem;
 `
 const FiltersPanel: React.FC<FilterPanelProps> = props => {
-
   return (
     <Root>
       <Filter>

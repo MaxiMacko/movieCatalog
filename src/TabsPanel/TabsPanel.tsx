@@ -12,6 +12,7 @@ import {
 } from "../helpers/helpers";
 import FiltersPanel from "../FiltersPanel/FiltersPanel";
 import MovieItem from "../MovieItem/MovieItem";
+import AddMovie from "../AddMovie/AddMovie";
 
 const StyledTabList = styled(TabList)`
   display: flex;
@@ -34,12 +35,32 @@ const StyledTab = styled(Tab)`
   }
 `
 
+const ButtonsPanel = styled.div`
+  margin-top: 20px;
+`
+
+const AddButton = styled.button`
+  height: 30px;
+  cursor: pointer;
+  color: white;
+  background-color: #0c0d71;
+  width: 10rem;
+  border: 1px solid white;
+  border-radius: 3px;
+  margin-right: 1rem;
+  &:hover {
+    color: #0c0d71;
+    background-color: white;
+  }
+`
+
 const TabsPanel: React.FC<TabsPanelProps> = props => {
   const { selectedTab } = props;
   const [allMovies, setAllMovies] = useState<IAllMovies>(testMovieDb);
   const [actorFilterValue, setActorFilterValue] = useState<string>('');
   const [genreFilterValue, setGenreFilterValue] = useState<string>('');
   const [nameFilterValue, setNameFilterValue] = useState<string>('');
+  const [showAddModalFlag, setShowAddModalFlag] = useState<boolean>(false)
 
   const removeMovieManager = removeMovieManagerHelper(allMovies);
   const deleteWatchedMovieHandler = removeMovieManager('watched');
@@ -65,6 +86,19 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
         actorFilterChangeHandler={setActorFilterValue}
         genreFilterChangeHandler={setGenreFilterValue}
       />
+
+      <ButtonsPanel>
+        <AddButton onClick={() => setShowAddModalFlag(true)}>Add Movie</AddButton>
+        {
+          showAddModalFlag && (
+            <AddMovie
+              open={showAddModalFlag}
+              closeHandler={() => setShowAddModalFlag(false)}
+            />
+          )
+        }
+      </ButtonsPanel>
+
       <TabPanel>
         <MovieList>
           {
