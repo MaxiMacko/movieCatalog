@@ -7,13 +7,20 @@ import { IconContext } from 'react-icons';
 const Root = styled.div`
   position: relative;
   border: 1px solid white;
-  height: 300px;
+  height: 350px;
   & + & {
     margin-top: 20px;
   }
   display: flex;
   color: white;
   padding: 1.5rem;
+`
+
+const MovieName = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
 `
 
 const PicAndRating = styled.div`
@@ -73,6 +80,7 @@ const MovieItem: React.FC<MovieItemTypeProps> = props => {
   return (
     <Root>
       <PicAndRating>
+        <MovieName>{movie.name}</MovieName>
         <PicWrapper>
           <Image src={movie.imageUrl} alt={'avatar'}/>
         </PicWrapper>

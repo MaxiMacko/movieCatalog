@@ -113,4 +113,12 @@ export const testMovieDb = {
   ]
 }
 
+export const GENRES = [
+  'Action',
+  'Thriller',
+  'Horror',
+  'Comedy',
+  'Drama'
+];
+
 

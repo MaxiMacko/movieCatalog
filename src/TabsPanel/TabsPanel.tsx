@@ -3,6 +3,7 @@ import {IAllMovies, MovieStatus, TabsPanelProps} from "../types";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import MovieList from "../MovieList/MovieList";
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom";
 import {
   containsName,
   hasActor, hasGenre,
@@ -12,7 +13,6 @@ import {
 } from "../helpers/helpers";
 import FiltersPanel from "../FiltersPanel/FiltersPanel";
 import MovieItem from "../MovieItem/MovieItem";
-import AddMovie from "../AddMovie/AddMovie";
 
 const StyledTabList = styled(TabList)`
   display: flex;
@@ -60,13 +60,15 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
   const [actorFilterValue, setActorFilterValue] = useState<string>('');
   const [genreFilterValue, setGenreFilterValue] = useState<string>('');
   const [nameFilterValue, setNameFilterValue] = useState<string>('');
-  const [showAddModalFlag, setShowAddModalFlag] = useState<boolean>(false)
 
   const removeMovieManager = removeMovieManagerHelper(allMovies);
   const deleteWatchedMovieHandler = removeMovieManager('watched');
   const deleteFutureMovieHandler = removeMovieManager('future');
+  const navigate = useNavigate();
 
   const movieStatusManager = movieStatusManagerHelper(testMovieDb);
+
+  const addMovieButtonHandler = () => navigate("/add-movie")
 
   const changeMovieStatusHandler = (id: string, moviesStatus: MovieStatus) => {
       setAllMovies(movieStatusManager(id, moviesStatus))
@@ -88,15 +90,7 @@ const TabsPanel: React.FC<TabsPanelProps> = props => {
       />
 
       <ButtonsPanel>
-        <AddButton onClick={() => setShowAddModalFlag(true)}>Add Movie</AddButton>
-        {
-          showAddModalFlag && (
-            <AddMovie
-              open={showAddModalFlag}
-              closeHandler={() => setShowAddModalFlag(false)}
-            />
-          )
-        }
+        <AddButton onClick={addMovieButtonHandler}>Add Movie</AddButton>
       </ButtonsPanel>
 
       <TabPanel>
