@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from 'styled-components'
 import TabsPanel from "../TabsPanel/TabsPanel";
 
@@ -20,6 +20,15 @@ const Title = styled.div`
 `
 const App:React.FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0)
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await getCities();
+  //     console.log(response);
+  //   }
+  //   fetchData();
+  // })
+
   return (
     <Root>
       <Title>My Movie Database</Title>

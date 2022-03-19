@@ -6,7 +6,8 @@ import styled from "styled-components";
 import {useNavigate} from "react-router-dom";
 import {
   containsName,
-  hasActor, hasGenre,
+  hasActor,
+  hasGenre,
   movieStatusManagerHelper,
   removeMovieManagerHelper,
   testMovieDb
